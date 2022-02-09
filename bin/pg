@@ -1,0 +1,31 @@
+#!/usr/bin/env node
+/**
+ * @Author: maple
+ * @Date: 2022-02-09 15:44:26
+ * @LastEditors: maple
+ * @LastEditTime: 2022-02-09 15:52:16
+ */
+const path = require('path');
+const main = require('../index');
+const argv = require('process').argv;
+
+const params = {};
+
+for (const arg of argv) {
+  if (arg.indexOf('--') === 0) {
+    const tmp = arg.replace('--', '').split('=');
+    params[tmp[0]] = tmp[1];
+  } else if (arg === 'done') {
+    params.done = true;
+  }
+}
+
+if (!params.path) {
+  throw new Error('error params');
+}
+const root = path.join(process.cwd(), params.path);
+console.log(`执行路径: ${root}`);
+
+if (params.done) {
+  main(root, params.maxTimes);
+}
